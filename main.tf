@@ -130,6 +130,7 @@ resource "aws_cloudwatch_log_group" "this" {
 }
 
 resource "aws_s3_bucket_notification" "this" {
+  count      = var.create_s3_bucket_notification ? 1 : 0
   depends_on = [aws_lambda_permission.this]
 
   bucket = var.s3_bucket_name
