@@ -24,7 +24,7 @@ variable "s3_bucket_new_key_prefix" {
 variable "create_s3_bucket_notification" {
   type        = bool
   description = "S3 Buckets only support a single notification configuration. ref.[aws_s3_bucket_notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_notification)"
-  default     = true
+  default     = false
 }
 
 variable "s3_bucket_gz_key_prefix" {
