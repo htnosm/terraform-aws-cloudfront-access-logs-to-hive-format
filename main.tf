@@ -98,7 +98,7 @@ resource "aws_lambda_function" "this" {
 
   runtime = var.lambda_function_runtime
   timeout = var.lambda_function_timeout
-  publish = var.lambda_function_publish
+  publish = false
 
   environment {
     variables = {
