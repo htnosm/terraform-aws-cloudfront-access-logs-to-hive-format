@@ -68,7 +68,6 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_create_s3_bucket_notification"></a> [create\_s3\_bucket\_notification](#input\_create\_s3\_bucket\_notification) | S3 Buckets only support a single notification configuration. ref.[aws\_s3\_bucket\_notification](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_notification) | `bool` | `true` | no |
 | <a name="input_lambda_function_log_retention_in_days"></a> [lambda\_function\_log\_retention\_in\_days](#input\_lambda\_function\_log\_retention\_in\_days) | Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0(never) | `number` | `30` | no |
-| <a name="input_lambda_function_publish"></a> [lambda\_function\_publish](#input\_lambda\_function\_publish) | n/a | `bool` | `true` | no |
 | <a name="input_lambda_function_runtime"></a> [lambda\_function\_runtime](#input\_lambda\_function\_runtime) | n/a | `string` | `"nodejs14.x"` | no |
 | <a name="input_lambda_function_timeout"></a> [lambda\_function\_timeout](#input\_lambda\_function\_timeout) | n/a | `number` | `30` | no |
 | <a name="input_name_prefix"></a> [name\_prefix](#input\_name\_prefix) | Prefix that is used for the created resources. If specified, it will be '{name\_prefix}-{name\_suffix}' | `string` | `""` | no |

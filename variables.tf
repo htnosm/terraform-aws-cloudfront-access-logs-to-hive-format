@@ -43,11 +43,6 @@ variable "lambda_function_timeout" {
   default = 30
 }
 
-variable "lambda_function_publish" {
-  type    = bool
-  default = true
-}
-
 variable "lambda_function_log_retention_in_days" {
   type        = number
   description = "Possible values are: 1, 3, 5, 7, 14, 30, 60, 90, 120, 150, 180, 365, 400, 545, 731, 1827, 3653, and 0(never)"
