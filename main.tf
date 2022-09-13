@@ -1,12 +1,35 @@
 /**
- * # move-cf-access-logs
+ * # terraform-aws-cloudfront-access-logs-to-hive-format
  *
- * ref. [aws-samples/amazon-cloudfront-access-logs-queries](https://github.com/aws-samples/amazon-cloudfront-access-logs-queries) "This Moves The File To An Apache Hive Style Prefix." Part.
+ * A Terraform template that move CloudFront Access Logs to Hive format for Athena.
  * 
- * - Differences from the Reference
- *   - CloudFormation to TerraForm
- *   - Use only moveAccessLogs
- *   - Keep the prefix and put it in front of the datetime
+ * ## Reference
+ *
+ * - [aws-samples/amazon-cloudfront-access-logs-queries](https://github.com/aws-samples/amazon-cloudfront-access-logs-queries)
+ *     - "This moves the file to an Apache Hive style prefix." part
+ *
+ * ### Changes
+ *
+ * - CloudFormation stack to TerraForm
+ * - Use only moveAccessLogs
+ * - Keep the prefix and put it in front of the datetime
+ *
+ * ## Overview
+ *
+ * ![overview](images/terraform-aws-cloudfront-access-logs-to-hive-format.png)
+ *
+ * - e.g.
+ *     - CloudFront logging setting:
+ *         - S3 bucket: example-bucket
+ *         - Log prefix: raw/example.com
+ *     - Inputs:
+ *         - new_key_prefix: raw/
+ *         - gz_key_prefix: partitioned-gz/
+ *     - Result:
+ *         - source:
+ *             - s3://example-bucket/raw/example.com/XXXXXXXXXXXXX.1990-01-01-00.XXXXXXXX.gz
+ *         - destination:
+ *             - S3: s3://example-bucket/partitioned-gz/example.com/year=1990/month=01/day=01/hour=00/XXXXXXXXXXXXX.1990-01-01-00.XXXXXXXX.gz
  */
 
 terraform {
@@ -17,12 +40,20 @@ terraform {
       source  = "hashicorp/aws"
       version = ">= 3.52"
     }
+    archive = {
+      source  = "hashicorp/archive"
+      version = ">= 2.2"
+    }
   }
 }
 
 locals {
   name = length(var.name_prefix) > 0 ? "${var.name_prefix}-${var.name_suffix}" : var.name_suffix
 }
+
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
 
 data "aws_iam_policy_document" "this_assume_role_policy" {
   statement {
@@ -123,6 +154,7 @@ resource "aws_lambda_permission" "this" {
 resource "aws_cloudwatch_log_group" "this" {
   name              = "/aws/lambda/${aws_lambda_function.this.function_name}"
   retention_in_days = var.lambda_function_log_retention_in_days
+  kms_key_id        = aws_kms_key.this.arn
 
   tags = {
     Name = aws_lambda_function.this.function_name

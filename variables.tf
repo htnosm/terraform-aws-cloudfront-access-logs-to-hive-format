@@ -34,13 +34,15 @@ variable "s3_bucket_gz_key_prefix" {
 }
 
 variable "lambda_function_runtime" {
-  type    = string
-  default = "nodejs14.x"
+  type        = string
+  description = "Identifier of the function's runtime."
+  default     = "nodejs16.x"
 }
 
 variable "lambda_function_timeout" {
-  type    = number
-  default = 30
+  type        = number
+  description = "Amount of time your Lambda Function has to run in seconds."
+  default     = 30
 }
 
 variable "lambda_function_log_retention_in_days" {
